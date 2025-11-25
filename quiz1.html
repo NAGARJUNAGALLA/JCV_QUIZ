@@ -37,7 +37,7 @@ window.MathJax = {
   h1,h3 { color:#1E90FF; text-align:center; }
   input, button, select { font-size:16px; padding:8px; }
   #user-form { text-align:center; margin-top:40px; }
-  button { cursor:pointer; border-radius:6px; border:none; background:#1E90FF; color:#fff; padding:10px 14px; }
+  button { cursor:pointer; border-radius:6px; border:none; background:#1e3a8a; color:#fff; padding:10px 14px; }
   .quiz-body { margin-top:20px; }
   .options label { display:block; border:1px solid #ddd; border-radius:8px; padding:10px; margin:8px 0; cursor:pointer; }
   .options label:hover { background:#f0f4ff; border-color:#1e3a8a; }
@@ -199,10 +199,6 @@ function verifyMobile(){
 
 /* ============= START QUIZ =========== */
 function startQuiz(){
-  // Refresh page when another quiz is selected after submission
-  if(submitted) {
-    location.reload();
-    return;
   const selectedQuiz = document.getElementById("quizSelect").value;
   if(!selectedQuiz){
     alert("Please select a quiz");
