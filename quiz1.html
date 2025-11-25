@@ -199,6 +199,10 @@ function verifyMobile(){
 
 /* ============= START QUIZ =========== */
 function startQuiz(){
+  // Refresh page when another quiz is selected after submission
+  if(submitted) {
+    location.reload();
+    return;
   const selectedQuiz = document.getElementById("quizSelect").value;
   if(!selectedQuiz){
     alert("Please select a quiz");
