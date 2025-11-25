@@ -17,7 +17,23 @@ window.MathJax = {
 
 <style>
   body { margin:0; font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
-  .quiz-container { max-width:900px; margin:0 auto; padding:20px; }
+  /* ====== TOP HEADER ====== */
+.quiz-header {
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+  .quiz-container { max-width:900px; margin-top:30px; padding:20px; }
   h1,h3 { color:#1E90FF; text-align:center; }
   input, button, select { font-size:16px; padding:8px; }
   #user-form { text-align:center; margin-top:40px; }
@@ -85,6 +101,16 @@ window.MathJax = {
 </div>
 
 <script>
+  // Create top header
+const header = document.createElement('div');
+header.className = 'quiz-header';
+header.innerHTML = `
+    <div style="display:flex; align-items:center;">
+        <span class="hamburger" onclick="toggleNav()">☰</span>
+        <div id="quiz-title">JCV ICE</div>
+    </div>
+`;
+document.body.appendChild(header);
 /* ================= CONFIG ================= */
 const SHEET_JSON_URL = "https://docs.google.com/spreadsheets/d/1qRFUQ_S_7pK_mb-cZb30CwcN6Gkb91A25Eq2JMefZNo/gviz/tq?tqx=out:json";
 
