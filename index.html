@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
+<title>Student App Login</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #2E3192;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+        position: relative;
+    }
+
+    .login-container {
+        background-color: #3B3BAE;
+        padding: 40px;
+        border-radius: 10px;
+        width: 320px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        text-align: center;
+    }
+
+    .login-container img {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+
+    .login-container h1 {
+        margin-bottom: 30px;
+    }
+
+    .login-container input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .login-container button {
+        width: 100%;
+        padding: 12px;
+        background-color: #fff;
+        color: #2E3192;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .login-container a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+    <img src="file:///mnt/data/1000711183.jpg" alt="Bhashyam Logo">
+    <h1>Student App</h1>
+    <input type="text" id="username" placeholder="Enter mobile or admission number">
+    <input type="password" id="password" placeholder="Enter password">
+    <a href="#">Forgot password</a>
+    <button onclick="login()">Sign in</button>
+</div>
+
+<script>
+    // Predefined usernames and passwords
+    const users = [
+        { username: "JCV001", password: "Abcdef1@" },
+        { username: "JCV002", password: "Xyz123$k" },
+        { username: "JCV003", password: "Pqr789#h" }
+        // Add more users as needed
+    ];
+
+    function login() {
+        const usernameInput = document.getElementById("username").value;
+        const passwordInput = document.getElementById("password").value;
+
+        const user = users.find(u => u.username === usernameInput && u.password === passwordInput);
+
+        if(user) {
+            // Redirect to dashboard.html
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Invalid username or password!");
+        }
+    }
+</script>
+
+</body>
+</html>
