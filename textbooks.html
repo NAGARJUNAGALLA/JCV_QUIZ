@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AP SSC Papers</title>
+<title>PDF Viewer Popup</title>
 
 <style>
 body {
@@ -12,28 +12,8 @@ body {
     background: #f4f4f4;
 }
 
-/* Year list */
-.year-box {
-    padding: 15px;
-    margin: 10px;
-    background: white;
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    border: 1px solid #ddd;
-}
-
-/* Subject box */
-.subject-box {
-    padding: 15px;
-    margin: 10px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-button {
-    padding: 10px 20px;
+.btn {
+    padding: 12px 20px;
     background: dodgerblue;
     color: white;
     border: none;
@@ -41,38 +21,39 @@ button {
     font-size: 18px;
 }
 
-/* POPUP */
-.popup-bg {
+/* Popup background */
+#popup {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.7);
     display: none;
+    z-index: 1000;
 }
 
-.popup-box {
+/* Popup box */
+#popupBox {
     position: fixed;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 95%;
-    height: 90%;
+    height: 92%;
     background: white;
     border-radius: 10px;
     overflow: hidden;
 }
 
-.close-btn {
+/* Close button */
+#closeBtn {
     background: red;
     color: white;
+    padding: 10px 20px;
     border: none;
-    padding: 10px 15px;
-    font-size: 18px;
     float: right;
-    cursor: pointer;
+    font-size: 18px;
 }
 
-/* PDF iframe takes full popup */
-.pdf-viewer {
+#pdfFrame {
     width: 100%;
     height: calc(100% - 50px);
     border: none;
@@ -80,20 +61,14 @@ button {
 </style>
 
 <script>
-function openYear(year) {
-    document.getElementById("yearList").style.display = "none";
-    document.getElementById("subjectList").style.display = "block";
-    document.getElementById("yearTitle").innerText = "AP SSC Papers " + year;
-
-    // Set PDF filenames (must exist in same GitHub folder)
-    window.currentYear = year;
-}
-
 function openPDF(pdfFile) {
     document.getElementById("popup").style.display = "block";
-    
-    // Load PDF directly (same folder GitHub)
-    document.getElementById("pdfFrame").src = pdfFile;
+
+    // LOAD PDF.JS VIEWER DIRECTLY
+    let viewerURL =
+        "https://mozilla.github.io/pdf.js/web/viewer.html?file=" + pdfFile;
+
+    document.getElementById("pdfFrame").src = viewerURL;
 }
 
 function closePopup() {
@@ -105,36 +80,15 @@ function closePopup() {
 </head>
 <body>
 
-<!-- FIRST PAGE – YEAR LIST -->
-<div id="yearList">
-    <div class="year-box" onclick="openYear(2025)">AP-SSC 10th Class Previous Question Papers 2025</div>
-</div>
+<h2>Test PDF Viewer</h2>
 
-<!-- SECOND PAGE – SUBJECT LIST -->
-<div id="subjectList" style="display:none;">
-    <h2 id="yearTitle"></h2>
+<button class="btn" onclick="openPDF('4thTeluguLesson1.pdf')">Open PDF</button>
 
-    <div class="subject-box">
-        <p><b>English</b></p>
-        <button onclick="openPDF('4thTeluguLesson1.pdf')">Open</button>
-    </div>
-
-    <div class="subject-box">
-        <p><b>Hindi</b></p>
-        <button onclick="openPDF('Hindi2025.pdf')">Open</button>
-    </div>
-
-    <div class="subject-box">
-        <p><b>Urdu</b></p>
-        <button onclick="openPDF('Urdu2025.pdf')">Open</button>
-    </div>
-</div>
-
-<!-- POPUP PDF VIEWER -->
-<div id="popup" class="popup-bg">
-    <div class="popup-box">
-        <button class="close-btn" onclick="closePopup()">Close</button>
-        <iframe id="pdfFrame" class="pdf-viewer"></iframe>
+<!-- POPUP -->
+<div id="popup">
+    <div id="popupBox">
+        <button id="closeBtn" onclick="closePopup()">Close</button>
+        <iframe id="pdfFrame"></iframe>
     </div>
 </div>
 
