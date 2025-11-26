@@ -32,6 +32,14 @@ body {
     color:#1e3a8a;
 }
 
+.subjectCard {
+    background: white;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
 .buttonOpen {
     background: #1e3a8a;
     color: white;
@@ -41,7 +49,10 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
-.buttonOpen:hover { opacity: 0.8; }
+
+.buttonOpen:hover {
+    opacity: 0.8;
+}
 
 /* Popup Modal */
 .modal {
@@ -81,17 +92,16 @@ iframe {
     width: 100%;
     height: 100%;
 }
-
-/* ====== SIDE NAVIGATION ====== */
+    /* ====== SIDE NAVIGATION ====== */
 .sidenav {
     height: 100vh;
-    width: 0;
+    width: 0; /* hidden by default */
     position: fixed;
     left: 0;
     top: 0;
     background-color: white;
-    border-right: 3px solid #1e3a8a;
-    padding-top: 60px;
+    border-right: 3px solid #1e3a8a; /* blue border */
+    padding-top: 60px; /* below header */
     overflow-y: auto;
     transition: width 0.3s;
     z-index: 5;
@@ -101,7 +111,7 @@ iframe {
     padding: 12px 16px;
     text-decoration: none;
     font-size: 16px;
-    color: #1e3a8a;
+    color: #1e3a8a; /* blue text */
     display: block;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     transition: background 0.2s, color 0.2s;
@@ -109,17 +119,36 @@ iframe {
 }
 
 .sidenav a:hover {
-    background-color: #1e3a8a;
-    color: white;
+    background-color: #1e3a8a; /* hover background blue */
+    color: white; /* text white on hover */
 }
 
 /* ====== MAIN CONTENT ====== */
 .main {
-    margin-left: 0;
+    margin-left: 0; /* sidebar hidden initially */
     padding: 15px;
     margin-top: 60px;
     margin-bottom: 60px;
     transition: margin-left 0.3s;
+}
+
+/* ====== BLOCKS (optional) ====== */
+.block {
+    padding: 20px;
+    color: white;
+    text-align: center;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+.block:active {
+    transform: scale(0.95);
 }
 
 /* ====== TOP HEADER ====== */
@@ -161,8 +190,15 @@ iframe {
     color:white;
     z-index: 10;
 }
-.nav-item { text-align: center; font-size: 12px; cursor: pointer; }
-.nav-item:hover { opacity: 0.7; }
+
+.nav-item {
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+.nav-item:hover {
+    opacity: 0.7;
+}
 </style>
 </head>
 
@@ -172,13 +208,19 @@ iframe {
 
     <!-- FIRST SCREEN (YEARS LIST) -->
     <div id="yearList">
-        <div class="yearBox" onclick="openYear('2026.html')">» AP-SSC 10th Class Previous Question Papers 2026</div>
-        <div class="yearBox" onclick="openYear('2025.html')">» AP-SSC 10th Class Previous Question Papers 2025</div>
-        <div class="yearBox" onclick="openYear('2024.html')">» AP-SSC 10th Class Previous Question Papers 2024</div>
-        <div class="yearBox" onclick="openYear('2021.html')">» AP-SSC 10th Class Previous Question Papers 2021</div>
+
+        <div class="yearBox" onclick="showYear('telugu')">» Class I Telugu</div>
+        <div class="yearBox" onclick="showYear('2025')">» AP-SSC 10th Class Previous Question Papers 2025</div>
+        <div class="yearBox" onclick="showYear('2024')">» AP-SSC 10th Class Previous Question Papers 2024</div>
+        <div class="yearBox" onclick="showYear('2021')">» AP-SSC 10th Class Previous Question Papers 2021</div>
+
     </div>
 
+    <!-- SECOND SCREEN (SUBJECTS) -->
+    <div id="subjectList" style="display:none;"></div>
+
 </div>
+
 
 <!-- POPUP MODAL -->
 <div id="pdfModal" class="modal">
@@ -188,13 +230,9 @@ iframe {
     </div>
 </div>
 
-<script>
-// YEAR REDIRECT FUNCTION
-function openYear(fileName) {
-    window.location.href = fileName;
-}
 
-// SIDEBAR LINKS
+<script>
+// ====== BLOCKS / LINKS FOR SIDE NAV ======
 const blocks = [
     { title: "Study Material", htmlFile: "pages/studymaterial.html" },
     { title: "Text Books", htmlFile: "pages/textbooks.html" },
@@ -205,11 +243,13 @@ const blocks = [
     { title: "Syllabus", htmlFile: "syllabus.html" },
 ];
 
+// Create sidebar dynamically
 const sideNav = document.createElement('div');
 sideNav.className = 'sidenav';
 sideNav.id = 'sideNav';
 document.body.appendChild(sideNav);
 
+// Populate side nav
 blocks.forEach(block => {
     const a = document.createElement("a");
     a.innerText = block.title;
@@ -217,7 +257,7 @@ blocks.forEach(block => {
     sideNav.appendChild(a);
 });
 
-// HEADER
+// Create top header
 const header = document.createElement('div');
 header.className = 'quiz-header';
 header.innerHTML = `
@@ -228,41 +268,115 @@ header.innerHTML = `
 `;
 document.body.appendChild(header);
 
-// BOTTOM NAVBAR
+// Create bottom navbar
 const navbar = document.createElement('div');
 navbar.className = 'navbar';
 navbar.innerHTML = `
   <div class="nav-item" onclick="goHome()">🏠<br>Home</div>
-  <div class="nav-item">📘<br>Exams</div>
-  <div class="nav-item">📝<br>Papers</div>
+  <div class="nav-item" onclick="goExams()">📘<br>Exams</div>
+  <div class="nav-item">📝<br>Exams</div>
   <div class="nav-item">🖥️<br>Online</div>
   <div class="nav-item">💳<br>Fee</div>
 `;
 document.body.appendChild(navbar);
 
-// SIDEBAR TOGGLE
-let navOpen = false;
+// Create main content container
+const mainContent = document.createElement('div');
+mainContent.className = 'main';
+mainContent.id = 'mainContent';
+document.body.insertBefore(mainContent, navbar);
+
+// ====== SIDEBAR TOGGLE ======
+let navOpen = false; // hidden by default
 function toggleNav() {
     if(navOpen) {
         document.getElementById("sideNav").style.width = "0";
+        document.getElementById("mainContent").style.marginLeft = "0";
     } else {
         document.getElementById("sideNav").style.width = "200px";
+        document.getElementById("mainContent").style.marginLeft = "200px";
     }
     navOpen = !navOpen;
 }
 
+// Bottom navbar functions
 function goHome() { window.location.href = "dashboard.html"; }
+function goLibrary() { window.location.href = "quiz1.html"; }
+// GOOGLE DRIVE PDF LINKS (Replace YOUR_LINK_HERE)
+let pdfLinks = {
+    "telugu": {
+        english: "https://drive.google.com/file/d/1MEMTz5VCXePQbonQC0hsvegc3BgjcsWb/preview",
+        hindi: "https://nagarjunagalla.github.io/JCV_QUIZ/4thTeluguLesson1.pdf",
+        urdu: "https://drive.google.com/file/d/YOUR_LINK_URDU/view"
+    },
+    "2026": {
+        english: "4thTeluguLesson1.pdf",
+        hindi: "#",
+        urdu: "#"
+    },
+    "2024": {
+        english: "#",
+        hindi: "#",
+        urdu: "#"
+    }
+};
 
-// PDF POPUP
+
+// SHOW SUBJECT LIST FOR SELECTED YEAR
+function showYear(year) {
+
+    document.getElementById("yearList").style.display = "none";
+
+    let container = `
+        <h2>AP SSC Papers ${year}</h2>
+
+        <div class='subjectCard'>
+            <b>Class:</b> 10th Class<br>
+            <b>Subject:</b> English - AP-SSC Syllabus<br>
+            <b>Year:</b> ${year}<br><br>
+            <button class='buttonOpen' onclick="openPDF('${pdfLinks[year].english}')">Open</button>
+        </div>
+
+        <div class='subjectCard'>
+            <b>Class:</b> 10th Class<br>
+            <b>Subject:</b> Hindi - AP-SSC Syllabus<br>
+            <b>Year:</b> ${year}<br><br>
+            <button class='buttonOpen' onclick="openPDF('${pdfLinks[year].hindi}')">Open</button>
+        </div>
+
+        <div class='subjectCard'>
+            <b>Class:</b> 10th Class<br>
+            <b>Subject:</b> Urdu - AP-SSC Syllabus<br>
+            <b>Year:</b> ${year}<br><br>
+            <button class='buttonOpen' onclick="openPDF('${pdfLinks[year].urdu}')">Open</button>
+        </div>
+
+        <button class='buttonOpen' style='background:gray;' onclick='goBack()'>Back</button>
+    `;
+
+    document.getElementById("subjectList").innerHTML = container;
+    document.getElementById("subjectList").style.display = "block";
+}
+
+
+// OPEN PDF IN POPUP
 function openPDF(link) {
     document.getElementById("pdfFrame").src = link;
     document.getElementById("pdfModal").style.display = "flex";
 }
 
+// CLOSE PDF POPUP
 function closePDF() {
     document.getElementById("pdfModal").style.display = "none";
     document.getElementById("pdfFrame").src = "";
 }
+
+// GO BACK TO YEAR LIST
+function goBack() {
+    document.getElementById("subjectList").style.display = "none";
+    document.getElementById("yearList").style.display = "block";
+}
+
 </script>
 
 </body>
