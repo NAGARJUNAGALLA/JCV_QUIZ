@@ -147,9 +147,9 @@
 <div class="navbar">
   <div class="nav-item" onclick="goHome()">🏠<br>Home</div>
   <div class="nav-item" onclick="goExams()">📘<br>Exams</div>
-  <div class="nav-item">📝<br>Text Books</div>
+  <div class="nav-item" onclick="goTextbooks()">📝<br>Text Books</div>
   <div class="nav-item">🖥️<br>Model Papers</div>
-  <div class="nav-item">💳<br>Previous Papers</div>
+  <div class="nav-item" onclick="goPreviouspapers()" >💳<br>Previous Papers</div>
 </div>    
 
 <script>
@@ -200,6 +200,7 @@ function toggleNav() {
 function goHome() { window.location.href = "dashboard.html"; }
 function goExams() { window.location.href = "quiz1.html"; }
 function goTextbooks(){window.location.href="textbooks.html";}
+function goPreviouspapers(){window.location.href="previouspapers.html";}
 </script>
 
 </body>
