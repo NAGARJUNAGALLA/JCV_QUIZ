@@ -1,242 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AP SSC Previous Papers</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP SSC Papers</title>
+
 <style>
-  :root{--blue:#2196F3;--bg:#f5f5f5}
-  body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);-webkit-font-smoothing:antialiased}
-  .container{width:95%;max-width:980px;margin:18px auto;padding-bottom:40px}
-  .yearBox{background:#fff;margin:10px 0;padding:16px;border-left:5px solid #e74c3c;font-size:18px;font-weight:700;border-radius:4px;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,0.03) inset}
-  .subjectCard{background:#fff;padding:14px;margin:12px 0;border-radius:6px;border:1px solid #e9e9e9}
-  .buttonOpen{background:var(--blue);color:#fff;border:0;padding:10px 16px;border-radius:6px;font-size:15px;cursor:pointer}
-  .buttonOpen[disabled]{opacity:.6;cursor:default}
-  .meta{margin-bottom:8px}
-  h2{margin:8px 0 14px}
-  /* modal */
-  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);align-items:center;justify-content:center;z-index:9999}
-  .modal.show{display:flex}
-  .modalBox{width:92%;height:90%;max-width:1100px;background:#fff;border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column}
-  .modalHead{display:flex;align-items:center;justify-content:flex-end;padding:8px 10px;background:#fafafa;border-bottom:1px solid #eee}
-  .closeBtn{background:#e74c3c;color:#fff;border:0;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:700}
-  .pdfWrap{flex:1;position:relative;background:#ddd}
-  iframe{width:100%;height:100%;border:0;display:block}
-  /* spinner & message */
-  .loader{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:10px}
-  .spinner{width:44px;height:44px;border-radius:50%;border:5px solid rgba(0,0,0,0.08);border-top-color:var(--blue);animation:spin .9s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .msg{background:rgba(255,255,255,0.95);padding:12px 14px;border-radius:8px;border:1px solid #eee;max-width:90%;text-align:center}
-  .error{color:#c0392b;font-weight:700}
-  /* prevent body scroll when modal open */
-  body.modal-open{overflow:hidden}
-  @media (max-width:520px){.yearBox{font-size:16px;padding:12px}.buttonOpen{padding:8px 12px}}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+}
+
+/* Year list */
+.year-box {
+    padding: 15px;
+    margin: 10px;
+    background: white;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+/* Subject box */
+.subject-box {
+    padding: 15px;
+    margin: 10px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+button {
+    padding: 10px 20px;
+    background: dodgerblue;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+/* POPUP */
+.popup-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+}
+
+.popup-box {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: 90%;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.close-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+}
+
+/* PDF iframe takes full popup */
+.pdf-viewer {
+    width: 100%;
+    height: calc(100% - 50px);
+    border: none;
+}
 </style>
+
+<script>
+function openYear(year) {
+    document.getElementById("yearList").style.display = "none";
+    document.getElementById("subjectList").style.display = "block";
+    document.getElementById("yearTitle").innerText = "AP SSC Papers " + year;
+
+    // Set PDF filenames (must exist in same GitHub folder)
+    window.currentYear = year;
+}
+
+function openPDF(pdfFile) {
+    document.getElementById("popup").style.display = "block";
+    
+    // Load PDF directly (same folder GitHub)
+    document.getElementById("pdfFrame").src = pdfFile;
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("pdfFrame").src = "";
+}
+</script>
+
 </head>
 <body>
 
-<div class="container">
-
-  <!-- YEAR LIST -->
-  <div id="yearList">
-    <div class="yearBox" onclick="showYear('2025')">» AP-SSC 10th Class Previous Question Papers 2025</div>
-    <div class="yearBox" onclick="showYear('2024')">» AP-SSC 10th Class Previous Question Papers 2024</div>
-    <div class="yearBox" onclick="showYear('2023')">» AP-SSC 10th Class Previous Question Papers 2023</div>
-  </div>
-
-  <!-- SUBJECT LIST (hidden initially) -->
-  <div id="subjectList" style="display:none"></div>
-
+<!-- FIRST PAGE – YEAR LIST -->
+<div id="yearList">
+    <div class="year-box" onclick="openYear(2025)">AP-SSC 10th Class Previous Question Papers 2025</div>
 </div>
 
-<!-- MODAL -->
-<div id="pdfModal" class="modal" aria-hidden="true" role="dialog" aria-label="PDF viewer">
-  <div class="modalBox">
-    <div class="modalHead">
-      <button class="closeBtn" id="modalCloseBtn" title="Close (Esc)">Close</button>
+<!-- SECOND PAGE – SUBJECT LIST -->
+<div id="subjectList" style="display:none;">
+    <h2 id="yearTitle"></h2>
+
+    <div class="subject-box">
+        <p><b>English</b></p>
+        <button onclick="openPDF('4thTeluguLesson1.pdf')">Open</button>
     </div>
 
-    <div class="pdfWrap">
-      <!-- loader / message area -->
-      <div id="modalLoader" class="loader" style="display:none">
-        <div class="spinner" aria-hidden="true"></div>
-        <div class="msg" id="loaderText">Loading PDF…</div>
-      </div>
-
-      <!-- iframe for PDF -->
-      <iframe id="pdfFrame" src="about:blank" title="PDF viewer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-
-      <!-- error/message overlay -->
-      <div id="modalMessage" class="loader" style="display:none">
-        <div class="msg">
-          <div id="modalMessageText">File could not be loaded.</div>
-          <div style="margin-top:8px"><button class="buttonOpen" onclick="closePDF()">OK</button></div>
-        </div>
-      </div>
+    <div class="subject-box">
+        <p><b>Hindi</b></p>
+        <button onclick="openPDF('Hindi2025.pdf')">Open</button>
     </div>
-  </div>
+
+    <div class="subject-box">
+        <p><b>Urdu</b></p>
+        <button onclick="openPDF('Urdu2025.pdf')">Open</button>
+    </div>
 </div>
 
-<script>
-/*
-  Usage:
-  - Place this HTML in a folder on your web server / GitHub Pages.
-  - Put PDFs in the same folder (e.g. english2025.pdf).
-  - The script loads the relative file directly into the iframe popup.
-*/
-const pdfFiles = {
-  "2025": { english: "4thTeluguLesson1.pdf", hindi: "hindi2025.pdf", urdu: "urdu2025.pdf" },
-  "2024": { english: "english2024.pdf", hindi: "hindi2024.pdf", urdu: "urdu2024.pdf" },
-  "2023": { english: "english2023.pdf", hindi: "hindi2023.pdf", urdu: "urdu2023.pdf" }
-};
-
-const yearListEl = document.getElementById('yearList');
-const subjectListEl = document.getElementById('subjectList');
-const modal = document.getElementById('pdfModal');
-const pdfFrame = document.getElementById('pdfFrame');
-const modalLoader = document.getElementById('modalLoader');
-const loaderText = document.getElementById('loaderText');
-const modalMessage = document.getElementById('modalMessage');
-const modalMessageText = document.getElementById('modalMessageText');
-const closeBtn = document.getElementById('modalCloseBtn');
-
-function showYear(year){
-  yearListEl.style.display = 'none';
-  subjectListEl.style.display = 'block';
-
-  subjectListEl.innerHTML = `
-    <h2>AP SSC Papers ${year}</h2>
-
-    <div class="subjectCard">
-      <div class="meta"><strong>Class:</strong> 10th Class</div>
-      <div class="meta"><strong>Subject:</strong> English</div>
-      <div class="meta"><strong>Year:</strong> ${year}</div>
-      <button class="buttonOpen" onclick="openPDFImmediate('${escapeHtml(pdfFiles[year].english)}')">Open</button>
+<!-- POPUP PDF VIEWER -->
+<div id="popup" class="popup-bg">
+    <div class="popup-box">
+        <button class="close-btn" onclick="closePopup()">Close</button>
+        <iframe id="pdfFrame" class="pdf-viewer"></iframe>
     </div>
+</div>
 
-    <div class="subjectCard">
-      <div class="meta"><strong>Class:</strong> 10th Class</div>
-      <div class="meta"><strong>Subject:</strong> Hindi</div>
-      <div class="meta"><strong>Year:</strong> ${year}</div>
-      <button class="buttonOpen" onclick="openPDFImmediate('${escapeHtml(pdfFiles[year].hindi)}')">Open</button>
-    </div>
-
-    <div class="subjectCard">
-      <div class="meta"><strong>Class:</strong> 10th Class</div>
-      <div class="meta"><strong>Subject:</strong> Urdu</div>
-      <div class="meta"><strong>Year:</strong> ${year}</div>
-      <button class="buttonOpen" onclick="openPDFImmediate('${escapeHtml(pdfFiles[year].urdu)}')">Open</button>
-    </div>
-
-    <div style="margin-top:6px">
-      <button class="buttonOpen" style="background:gray" onclick="goBack()">Back</button>
-    </div>
-  `;
-}
-
-// directly open PDF in popup (no intermediate text)
-async function openPDFImmediate(fileName){
-  if(!fileName){ showError('No file configured for this subject.'); return; }
-
-  // show modal immediately
-  showModal();
-  showLoader('Loading PDF…');
-
-  // Build relative URL - if your HTML is in same folder as PDFs this will work
-  const relativeUrl = fileName;
-
-  // Attempt HEAD fetch to confirm file exists (quick feedback). If server blocks HEAD, fallback to GET attempt.
-  try{
-    let ok = false;
-    try{
-      const head = await fetch(relativeUrl, { method: 'HEAD' });
-      ok = head.ok;
-    }catch(_){
-      // Some hosts block HEAD; try GET but don't download body (will still start)
-      try{
-        const get = await fetch(relativeUrl, { method: 'GET' });
-        ok = get.ok;
-      }catch(e){
-        ok = false;
-      }
-    }
-
-    if(ok){
-      // load into iframe directly
-      pdfFrame.src = relativeUrl;
-      // hide loader once iframe has loaded
-      pdfFrame.onload = () => { hideLoader(); };
-      // if onload doesn't fire properly (CORS or browser PDF viewer), hide loader after timeout
-      setTimeout(()=>{ hideLoader(); }, 3000);
-    } else {
-      showError('File not found at: ' + relativeUrl);
-    }
-
-  }catch(err){
-    showError('Error loading file. ' + (err && err.message ? err.message : ''));
-  }
-}
-
-function showModal(){
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden','false');
-  document.body.classList.add('modal-open');
-  // clear previous iframe
-  pdfFrame.src = 'about:blank';
-  modalMessage.style.display = 'none';
-}
-
-function closePDF(){
-  modal.classList.remove('show');
-  modal.setAttribute('aria-hidden','true');
-  document.body.classList.remove('modal-open');
-  pdfFrame.src = 'about:blank';
-  hideLoader();
-  modalMessage.style.display = 'none';
-}
-
-function goBack(){
-  subjectListEl.style.display = 'none';
-  yearListEl.style.display = 'block';
-}
-
-function showLoader(text){
-  loaderText.textContent = text || 'Loading…';
-  modalLoader.style.display = 'flex';
-  modalMessage.style.display = 'none';
-}
-
-function hideLoader(){
-  modalLoader.style.display = 'none';
-}
-
-function showError(msg){
-  hideLoader();
-  modalMessageText.textContent = msg;
-  modalMessage.style.display = 'flex';
-}
-
-// close handling
-closeBtn.addEventListener('click', closePDF);
-window.addEventListener('keydown', (e)=> {
-  if(e.key === 'Escape' && modal.classList.contains('show')) closePDF();
-});
-
-// small HTML-escape for filenames inserted into markup
-function escapeHtml(str){
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-// Accessibility: trap focus inside modal when open (basic)
-document.addEventListener('focus', function(e){
-  if(modal.classList.contains('show') && !modal.contains(e.target)) {
-    e.stopPropagation();
-    closeBtn.focus();
-  }
-}, true);
-
-// initial: show year list (default)
-yearListEl.style.display = 'block';
-</script>
 </body>
 </html>
