@@ -48,7 +48,7 @@
     .main {
         margin-left: 0; /* start with sidenav hidden */
         padding: 15px;
-        margin-top: 60px;
+        margin-top: 70px;
         margin-bottom: 60px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -64,7 +64,7 @@
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        height: 40px;
+        height: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -146,10 +146,10 @@
 <!-- Bottom Navigation -->
 <div class="navbar">
   <div class="nav-item" onclick="goHome()">🏠<br>Home</div>
-  <div class="nav-item" onclick="goLibrary()">📘<br>Library</div>
-  <div class="nav-item">📝<br>Exams</div>
-  <div class="nav-item">🖥️<br>Online</div>
-  <div class="nav-item">💳<br>Fee</div>
+  <div class="nav-item" onclick="goExams()">📘<br>Exams</div>
+  <div class="nav-item">📝<br>Text Books</div>
+  <div class="nav-item">🖥️<br>Model Papers</div>
+  <div class="nav-item">💳<br>Previous Papers</div>
 </div>    
 
 <script>
@@ -198,7 +198,8 @@ function toggleNav() {
 
 // Bottom navbar functions
 function goHome() { window.location.href = "dashboard.html"; }
-function goLibrary() { window.location.href = "quiz1.html"; }
+function goExams() { window.location.href = "quiz1.html"; }
+function goTextbooks(){window.location.href="textbooks.html";}
 </script>
 
 </body>
