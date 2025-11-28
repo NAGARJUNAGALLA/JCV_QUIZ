@@ -41,6 +41,22 @@ window.MathJax = {
   label.select-label { display:block; font-size:14px; color:#333; margin-bottom:6px; text-align:left; }
   .select-box { width:100%; max-width:420px; }
   .small-muted { color:gray; font-size:13px; }
+  /* ====== TOP HEADER ====== */
+.quiz-header {
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
 </style>
 </head>
 <body>
@@ -550,7 +566,16 @@ function goBackToSelectTest() {
   current = 0;
   submitted = false;
 }
-
+// Create top header
+const header = document.createElement('div');
+header.className = 'quiz-header';
+header.innerHTML = `
+    <div style="display:flex; align-items:center;">
+        <span class="hamburger" onclick="toggleNav()"></span>
+        <div id="quiz-title">JCV ICE</span></div>
+    </div>
+`;
+document.body.appendChild(header);
 
 
 </script>
