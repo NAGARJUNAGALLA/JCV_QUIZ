@@ -401,29 +401,32 @@ function escapeHtml(str){
 
 /* When questions are rendered after submission, ensure correct/wrong classes applied to labels */
 (function enhanceRenderAfterSubmit(){
-  // wrap original renderQuestion to add label class adjustments after DOM update
-  const origRender = renderQuestion;
+  const orig = renderQuestion;
   renderQuestion = function(){
-    origRender();
-    // apply classes when submitted
-    if(submitted){
-      // current question DOM labels
-      const qObj = questions[current];
-      const labels = Array.from(document.querySelectorAll("#question-container .options .option-label"));
-      // clear previous classes first
-      labels.forEach(l => { l.classList.remove("correct","wrong"); });
-      // mark correct label (if known)
-      if(qObj.answerId !== null && labels[qObj.answerId]) labels[qObj.answerId].classList.add("correct");
-      // mark wrong selected (if any)
-      if(answers[current] !== null && qObj.answerId !== null && answers[current] !== qObj.answerId && labels[answers[current]]) {
-        labels[answers[current]].classList.add("wrong");
+    orig();
+
+    if (!submitted) return;
+
+    const qObj = questions[current];
+    const labels = document.querySelectorAll("#question-container .option-label");
+
+    labels.forEach((label, index) => {
+      label.classList.remove("correct", "wrong");
+
+      // highlight correct answer
+      if (index === qObj.answerId) {
+        label.classList.add("correct");
       }
-      // disable radios in this question (they may be enabled on other question renders)
-      labels.forEach(l => {
-        const rb = l.querySelector('input[type="radio"]');
-        if(rb) rb.disabled = true;
-      });
-    }
+
+      // highlight wrong selected answer
+      if (answers[current] === index && answers[current] !== qObj.answerId) {
+        label.classList.add("wrong");
+      }
+
+      // disable radios
+      const rb = label.querySelector("input[type='radio']");
+      if (rb) rb.disabled = true;
+    });
   };
 })();
 
