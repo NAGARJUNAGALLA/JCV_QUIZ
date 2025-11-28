@@ -16,10 +16,19 @@ window.MathJax = {
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <style>
-  body { margin:0; font-family: 'Segoe UI', sans-serif; background: #f5f7fa;background: url('logo.png') no-repeat center center; /* Your watermark image */
-    background-size: contain;
-    opacity: 0.2; }
-  
+  body { margin:0; font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
+  body::after {
+    content: "JCV ICE"; /* Your watermark text */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.1); /* Transparent light watermark */
+    pointer-events: none; /* Clicks pass through */
+    z-index: 9999;
+    white-space: nowrap;
+  }
   .quiz-container { max-width:900px; margin-top:30px; padding:20px; }
   h1,h3 { color:#1E3E8E; text-align:center; }
   input, button, select { font-size:16px; padding:8px; }
