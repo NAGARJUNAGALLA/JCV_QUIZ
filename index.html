@@ -16,7 +16,10 @@ window.MathJax = {
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <style>
-  body { margin:0; font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
+  body { margin:0; font-family: 'Segoe UI', sans-serif; background: #f5f7fa;background: url('logo.png') no-repeat center center; /* Your watermark image */
+    background-size: contain;
+    opacity: 0.2; }
+  
   .quiz-container { max-width:900px; margin-top:30px; padding:20px; }
   h1,h3 { color:#1E3E8E; text-align:center; }
   input, button, select { font-size:16px; padding:8px; }
